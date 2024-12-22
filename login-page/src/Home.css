@@ -1,0 +1,31 @@
+.home-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background: none !important; /* Ensure no background image or color */
+  }
+  
+  .home-header {
+    text-align: center;
+    background-color: #ffffff; /* White background for content */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for a modern look */
+    max-width: 400px;
+    width: 100%;
+  }
+  
+  .home-header h1 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .home-header p {
+    font-size: 1rem;
+    color: #555;
+  }
+  

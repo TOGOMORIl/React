@@ -1,0 +1,45 @@
+body {
+    margin: 0;
+    font-family: "Arial", sans-serif;
+    background: url('./assets/Eco.jpg') no-repeat center center fixed; /* Same background as Login Page */
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .register-card {
+    background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+    padding: 30px 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Consistent shadow */
+    width: 350px;
+    text-align: center;
+  }
+  .register-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .register-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .register-logo {
+    width: 200px; /* Adjust the size to match your Login page */
+    height: auto;
+    margin-bottom: 20px;
+    border-radius: 50%; /* Makes the logo circular */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow */
+  }
+  
+  
+  
+  

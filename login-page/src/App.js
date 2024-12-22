@@ -1,12 +1,17 @@
-import React from 'react';
-import Login from './Login'; // Note: the path './Login' means that Login.js is in the same directory as App.js
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import Home from "./Home.js";
+import Login from "./login.js";
+import Register from "./Register.js";
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <Login />
-    </div>
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/home" element={<Home />} />
+      <Route path="/register" element={<Register />} />
+    </Routes>
   );
-}
+};
 
 export default App;

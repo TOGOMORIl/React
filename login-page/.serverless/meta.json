@@ -1,0 +1,870 @@
+{
+  "C:\\Users\\TOGOMORI\\Desktop\\Final Project\\React\\login-page": {
+    "versionSfCore": null,
+    "versionFramework": "4.4.18",
+    "isWithinCompose": false,
+    "isCompose": false,
+    "composeOrgName": null,
+    "composeResolverProviders": {
+      "default-aws-credential-resolver": "<REDACTED>",
+      "sls": {
+        "instance": {
+          "credentials": "<REDACTED>",
+          "serviceConfigFile": {
+            "service": "react-app-serverless",
+            "provider": {
+              "name": "aws",
+              "runtime": "nodejs18.x",
+              "region": "us-east-1",
+              "stage": "dev",
+              "versionFunctions": true,
+              "compiledCloudFormationTemplate": {
+                "AWSTemplateFormatVersion": "2010-09-09",
+                "Description": "The AWS CloudFormation template for this Serverless application",
+                "Resources": {
+                  "ReactAppLogGroup": {
+                    "Type": "AWS::Logs::LogGroup",
+                    "Properties": {
+                      "LogGroupName": "/aws/lambda/react-app-serverless-dev-reactApp"
+                    }
+                  },
+                  "IamRoleLambdaExecution": {
+                    "Type": "AWS::IAM::Role",
+                    "Properties": {
+                      "AssumeRolePolicyDocument": {
+                        "Version": "2012-10-17",
+                        "Statement": [
+                          {
+                            "Effect": "Allow",
+                            "Principal": {
+                              "Service": [
+                                "lambda.amazonaws.com"
+                              ]
+                            },
+                            "Action": [
+                              "sts:AssumeRole"
+                            ]
+                          }
+                        ]
+                      },
+                      "Policies": [
+                        {
+                          "PolicyName": {
+                            "Fn::Join": [
+                              "-",
+                              [
+                                "react-app-serverless",
+                                "dev",
+                                "lambda"
+                              ]
+                            ]
+                          },
+                          "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                              {
+                                "Effect": "Allow",
+                                "Action": [
+                                  "logs:CreateLogStream",
+                                  "logs:CreateLogGroup",
+                                  "logs:TagResource"
+                                ],
+                                "Resource": [
+                                  {
+                                    "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/react-app-serverless-dev*:*"
+                                  }
+                                ]
+                              },
+                              {
+                                "Effect": "Allow",
+                                "Action": [
+                                  "logs:PutLogEvents"
+                                ],
+                                "Resource": [
+                                  {
+                                    "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/react-app-serverless-dev*:*:*"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      ],
+                      "Path": "/",
+                      "RoleName": {
+                        "Fn::Join": [
+                          "-",
+                          [
+                            "react-app-serverless",
+                            "dev",
+                            {
+                              "Ref": "AWS::Region"
+                            },
+                            "lambdaRole"
+                          ]
+                        ]
+                      }
+                    }
+                  },
+                  "ReactAppLambdaFunction": {
+                    "Type": "AWS::Lambda::Function",
+                    "Properties": {
+                      "Code": {
+                        "S3Bucket": "serverless-framework-deployments-us-east-1-7d54f465-ca21",
+                        "S3Key": "serverless/react-app-serverless/dev/1734870218567-2024-12-22T12:23:38.567Z/react-app-serverless.zip"
+                      },
+                      "Handler": "handler.main",
+                      "Runtime": "nodejs18.x",
+                      "FunctionName": "react-app-serverless-dev-reactApp",
+                      "MemorySize": 1024,
+                      "Timeout": 6,
+                      "Role": {
+                        "Fn::GetAtt": [
+                          "IamRoleLambdaExecution",
+                          "Arn"
+                        ]
+                      }
+                    },
+                    "DependsOn": [
+                      "ReactAppLogGroup"
+                    ]
+                  },
+                  "ReactAppLambdaVersion0kqZYPj4En1vyjXXVsM7b3vhOKgyKaksUBms7RZE": {
+                    "Type": "AWS::Lambda::Version",
+                    "DeletionPolicy": "Retain",
+                    "Properties": {
+                      "FunctionName": {
+                        "Ref": "ReactAppLambdaFunction"
+                      },
+                      "CodeSha256": "yA5Wl9dUtBEYzrjxZwra6o+qJvIYhVpA0aX74npRTY0="
+                    }
+                  },
+                  "ApiGatewayRestApi": {
+                    "Type": "AWS::ApiGateway::RestApi",
+                    "Properties": {
+                      "Name": "dev-react-app-serverless",
+                      "EndpointConfiguration": {
+                        "Types": [
+                          "EDGE"
+                        ]
+                      },
+                      "Policy": ""
+                    }
+                  },
+                  "ApiGatewayResourceProxyVar": {
+                    "Type": "AWS::ApiGateway::Resource",
+                    "Properties": {
+                      "ParentId": {
+                        "Fn::GetAtt": [
+                          "ApiGatewayRestApi",
+                          "RootResourceId"
+                        ]
+                      },
+                      "PathPart": "{proxy+}",
+                      "RestApiId": {
+                        "Ref": "ApiGatewayRestApi"
+                      }
+                    }
+                  },
+                  "ApiGatewayMethodAny": {
+                    "Type": "AWS::ApiGateway::Method",
+                    "Properties": {
+                      "HttpMethod": "ANY",
+                      "RequestParameters": {},
+                      "ResourceId": {
+                        "Fn::GetAtt": [
+                          "ApiGatewayRestApi",
+                          "RootResourceId"
+                        ]
+                      },
+                      "RestApiId": {
+                        "Ref": "ApiGatewayRestApi"
+                      },
+                      "ApiKeyRequired": "<REDACTED>",
+                      "AuthorizationType": "NONE",
+                      "Integration": {
+                        "IntegrationHttpMethod": "POST",
+                        "Type": "AWS_PROXY",
+                        "Uri": {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "arn:",
+                              {
+                                "Ref": "AWS::Partition"
+                              },
+                              ":apigateway:",
+                              {
+                                "Ref": "AWS::Region"
+                              },
+                              ":lambda:path/2015-03-31/functions/",
+                              {
+                                "Fn::GetAtt": [
+                                  "ReactAppLambdaFunction",
+                                  "Arn"
+                                ]
+                              },
+                              "/invocations"
+                            ]
+                          ]
+                        }
+                      },
+                      "MethodResponses": []
+                    },
+                    "DependsOn": [
+                      "ReactAppLambdaPermissionApiGateway"
+                    ]
+                  },
+                  "ApiGatewayMethodProxyVarAny": {
+                    "Type": "AWS::ApiGateway::Method",
+                    "Properties": {
+                      "HttpMethod": "ANY",
+                      "RequestParameters": {},
+                      "ResourceId": {
+                        "Ref": "ApiGatewayResourceProxyVar"
+                      },
+                      "RestApiId": {
+                        "Ref": "ApiGatewayRestApi"
+                      },
+                      "ApiKeyRequired": "<REDACTED>",
+                      "AuthorizationType": "NONE",
+                      "Integration": {
+                        "IntegrationHttpMethod": "POST",
+                        "Type": "AWS_PROXY",
+                        "Uri": {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "arn:",
+                              {
+                                "Ref": "AWS::Partition"
+                              },
+                              ":apigateway:",
+                              {
+                                "Ref": "AWS::Region"
+                              },
+                              ":lambda:path/2015-03-31/functions/",
+                              {
+                                "Fn::GetAtt": [
+                                  "ReactAppLambdaFunction",
+                                  "Arn"
+                                ]
+                              },
+                              "/invocations"
+                            ]
+                          ]
+                        }
+                      },
+                      "MethodResponses": []
+                    },
+                    "DependsOn": [
+                      "ReactAppLambdaPermissionApiGateway"
+                    ]
+                  },
+                  "ApiGatewayDeployment1734870171345": {
+                    "Type": "AWS::ApiGateway::Deployment",
+                    "Properties": {
+                      "RestApiId": {
+                        "Ref": "ApiGatewayRestApi"
+                      },
+                      "StageName": "dev"
+                    },
+                    "DependsOn": [
+                      "ApiGatewayMethodAny",
+                      "ApiGatewayMethodProxyVarAny"
+                    ]
+                  },
+                  "ReactAppLambdaPermissionApiGateway": {
+                    "Type": "AWS::Lambda::Permission",
+                    "Properties": {
+                      "FunctionName": {
+                        "Fn::GetAtt": [
+                          "ReactAppLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "Action": "lambda:InvokeFunction",
+                      "Principal": "apigateway.amazonaws.com",
+                      "SourceArn": {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            ":execute-api:",
+                            {
+                              "Ref": "AWS::Region"
+                            },
+                            ":",
+                            {
+                              "Ref": "AWS::AccountId"
+                            },
+                            ":",
+                            {
+                              "Ref": "ApiGatewayRestApi"
+                            },
+                            "/*/*"
+                          ]
+                        ]
+                      }
+                    }
+                  },
+                  "ReactAppBucket": {
+                    "Type": "AWS::S3::Bucket",
+                    "Properties": {
+                      "BucketName": "my-react-app-bucket-unique-id",
+                      "WebsiteConfiguration": {
+                        "IndexDocument": "index.html",
+                        "ErrorDocument": "index.html"
+                      }
+                    }
+                  }
+                },
+                "Outputs": {
+                  "ServerlessDeploymentBucketName": {
+                    "Value": "serverless-framework-deployments-us-east-1-7d54f465-ca21",
+                    "Export": {
+                      "Name": "sls-react-app-serverless-dev-ServerlessDeploymentBucketName"
+                    }
+                  },
+                  "ReactAppLambdaFunctionQualifiedArn": {
+                    "Description": "Current Lambda function version",
+                    "Value": {
+                      "Ref": "ReactAppLambdaVersion0kqZYPj4En1vyjXXVsM7b3vhOKgyKaksUBms7RZE"
+                    },
+                    "Export": {
+                      "Name": "sls-react-app-serverless-dev-ReactAppLambdaFunctionQualifiedArn"
+                    }
+                  },
+                  "ServiceEndpoint": {
+                    "Description": "URL of the service endpoint",
+                    "Value": {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "https://",
+                          {
+                            "Ref": "ApiGatewayRestApi"
+                          },
+                          ".execute-api.",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          ".",
+                          {
+                            "Ref": "AWS::URLSuffix"
+                          },
+                          "/dev"
+                        ]
+                      ]
+                    },
+                    "Export": {
+                      "Name": "sls-react-app-serverless-dev-ServiceEndpoint"
+                    }
+                  }
+                }
+              },
+              "vpc": {}
+            },
+            "functions": {
+              "reactApp": {
+                "handler": "handler.main",
+                "events": [
+                  {
+                    "http": "ANY /"
+                  },
+                  {
+                    "http": "ANY /{proxy+}"
+                  }
+                ],
+                "name": "react-app-serverless-dev-reactApp",
+                "package": {},
+                "memory": 1024,
+                "timeout": 6,
+                "runtime": "nodejs18.x",
+                "vpc": {},
+                "versionLogicalId": "ReactAppLambdaVersion0kqZYPj4En1vyjXXVsM7b3vhOKgyKaksUBms7RZE"
+              }
+            },
+            "resources": {
+              "Resources": {
+                "ReactAppBucket": {
+                  "Type": "AWS::S3::Bucket",
+                  "Properties": {
+                    "BucketName": "my-react-app-bucket-unique-id",
+                    "WebsiteConfiguration": {
+                      "IndexDocument": "index.html",
+                      "ErrorDocument": "index.html"
+                    }
+                  }
+                }
+              },
+              "Outputs": {}
+            },
+            "plugins": [
+              "serverless-apigw-binary"
+            ]
+          },
+          "configFileDirPath": "C:\\Users\\TOGOMORI\\Desktop\\Final Project\\React\\login-page",
+          "config": {
+            "type": "sls"
+          },
+          "options": {},
+          "stage": "dev",
+          "dashboard": null,
+          "logger": {
+            "namespace": "s:core:resolver:sls",
+            "prefix": null,
+            "prefixColor": null
+          },
+          "_credentialsPromise": "<REDACTED>"
+        },
+        "resolvers": {}
+      }
+    },
+    "composeServiceName": null,
+    "servicePath": "C:\\Users\\TOGOMORI\\Desktop\\Final Project\\React\\login-page",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "service": "react-app-serverless",
+      "provider": {
+        "name": "aws",
+        "runtime": "nodejs18.x",
+        "region": "us-east-1",
+        "stage": "dev",
+        "versionFunctions": true,
+        "compiledCloudFormationTemplate": {
+          "AWSTemplateFormatVersion": "2010-09-09",
+          "Description": "The AWS CloudFormation template for this Serverless application",
+          "Resources": {
+            "ReactAppLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/react-app-serverless-dev-reactApp"
+              }
+            },
+            "IamRoleLambdaExecution": {
+              "Type": "AWS::IAM::Role",
+              "Properties": {
+                "AssumeRolePolicyDocument": {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "Service": [
+                          "lambda.amazonaws.com"
+                        ]
+                      },
+                      "Action": [
+                        "sts:AssumeRole"
+                      ]
+                    }
+                  ]
+                },
+                "Policies": [
+                  {
+                    "PolicyName": {
+                      "Fn::Join": [
+                        "-",
+                        [
+                          "react-app-serverless",
+                          "dev",
+                          "lambda"
+                        ]
+                      ]
+                    },
+                    "PolicyDocument": {
+                      "Version": "2012-10-17",
+                      "Statement": [
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "logs:CreateLogStream",
+                            "logs:CreateLogGroup",
+                            "logs:TagResource"
+                          ],
+                          "Resource": [
+                            {
+                              "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/react-app-serverless-dev*:*"
+                            }
+                          ]
+                        },
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "logs:PutLogEvents"
+                          ],
+                          "Resource": [
+                            {
+                              "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/react-app-serverless-dev*:*:*"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "Path": "/",
+                "RoleName": {
+                  "Fn::Join": [
+                    "-",
+                    [
+                      "react-app-serverless",
+                      "dev",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      "lambdaRole"
+                    ]
+                  ]
+                }
+              }
+            },
+            "ReactAppLambdaFunction": {
+              "Type": "AWS::Lambda::Function",
+              "Properties": {
+                "Code": {
+                  "S3Bucket": "serverless-framework-deployments-us-east-1-7d54f465-ca21",
+                  "S3Key": "serverless/react-app-serverless/dev/1734870218567-2024-12-22T12:23:38.567Z/react-app-serverless.zip"
+                },
+                "Handler": "handler.main",
+                "Runtime": "nodejs18.x",
+                "FunctionName": "react-app-serverless-dev-reactApp",
+                "MemorySize": 1024,
+                "Timeout": 6,
+                "Role": {
+                  "Fn::GetAtt": [
+                    "IamRoleLambdaExecution",
+                    "Arn"
+                  ]
+                }
+              },
+              "DependsOn": [
+                "ReactAppLogGroup"
+              ]
+            },
+            "ReactAppLambdaVersion0kqZYPj4En1vyjXXVsM7b3vhOKgyKaksUBms7RZE": {
+              "Type": "AWS::Lambda::Version",
+              "DeletionPolicy": "Retain",
+              "Properties": {
+                "FunctionName": {
+                  "Ref": "ReactAppLambdaFunction"
+                },
+                "CodeSha256": "yA5Wl9dUtBEYzrjxZwra6o+qJvIYhVpA0aX74npRTY0="
+              }
+            },
+            "ApiGatewayRestApi": {
+              "Type": "AWS::ApiGateway::RestApi",
+              "Properties": {
+                "Name": "dev-react-app-serverless",
+                "EndpointConfiguration": {
+                  "Types": [
+                    "EDGE"
+                  ]
+                },
+                "Policy": ""
+              }
+            },
+            "ApiGatewayResourceProxyVar": {
+              "Type": "AWS::ApiGateway::Resource",
+              "Properties": {
+                "ParentId": {
+                  "Fn::GetAtt": [
+                    "ApiGatewayRestApi",
+                    "RootResourceId"
+                  ]
+                },
+                "PathPart": "{proxy+}",
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                }
+              }
+            },
+            "ApiGatewayMethodAny": {
+              "Type": "AWS::ApiGateway::Method",
+              "Properties": {
+                "HttpMethod": "ANY",
+                "RequestParameters": {},
+                "ResourceId": {
+                  "Fn::GetAtt": [
+                    "ApiGatewayRestApi",
+                    "RootResourceId"
+                  ]
+                },
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                },
+                "ApiKeyRequired": "<REDACTED>",
+                "AuthorizationType": "NONE",
+                "Integration": {
+                  "IntegrationHttpMethod": "POST",
+                  "Type": "AWS_PROXY",
+                  "Uri": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":apigateway:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":lambda:path/2015-03-31/functions/",
+                        {
+                          "Fn::GetAtt": [
+                            "ReactAppLambdaFunction",
+                            "Arn"
+                          ]
+                        },
+                        "/invocations"
+                      ]
+                    ]
+                  }
+                },
+                "MethodResponses": []
+              },
+              "DependsOn": [
+                "ReactAppLambdaPermissionApiGateway"
+              ]
+            },
+            "ApiGatewayMethodProxyVarAny": {
+              "Type": "AWS::ApiGateway::Method",
+              "Properties": {
+                "HttpMethod": "ANY",
+                "RequestParameters": {},
+                "ResourceId": {
+                  "Ref": "ApiGatewayResourceProxyVar"
+                },
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                },
+                "ApiKeyRequired": "<REDACTED>",
+                "AuthorizationType": "NONE",
+                "Integration": {
+                  "IntegrationHttpMethod": "POST",
+                  "Type": "AWS_PROXY",
+                  "Uri": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":apigateway:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":lambda:path/2015-03-31/functions/",
+                        {
+                          "Fn::GetAtt": [
+                            "ReactAppLambdaFunction",
+                            "Arn"
+                          ]
+                        },
+                        "/invocations"
+                      ]
+                    ]
+                  }
+                },
+                "MethodResponses": []
+              },
+              "DependsOn": [
+                "ReactAppLambdaPermissionApiGateway"
+              ]
+            },
+            "ApiGatewayDeployment1734870171345": {
+              "Type": "AWS::ApiGateway::Deployment",
+              "Properties": {
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                },
+                "StageName": "dev"
+              },
+              "DependsOn": [
+                "ApiGatewayMethodAny",
+                "ApiGatewayMethodProxyVarAny"
+              ]
+            },
+            "ReactAppLambdaPermissionApiGateway": {
+              "Type": "AWS::Lambda::Permission",
+              "Properties": {
+                "FunctionName": {
+                  "Fn::GetAtt": [
+                    "ReactAppLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "apigateway.amazonaws.com",
+                "SourceArn": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":execute-api:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":",
+                      {
+                        "Ref": "ApiGatewayRestApi"
+                      },
+                      "/*/*"
+                    ]
+                  ]
+                }
+              }
+            },
+            "ReactAppBucket": {
+              "Type": "AWS::S3::Bucket",
+              "Properties": {
+                "BucketName": "my-react-app-bucket-unique-id",
+                "WebsiteConfiguration": {
+                  "IndexDocument": "index.html",
+                  "ErrorDocument": "index.html"
+                }
+              }
+            }
+          },
+          "Outputs": {
+            "ServerlessDeploymentBucketName": {
+              "Value": "serverless-framework-deployments-us-east-1-7d54f465-ca21",
+              "Export": {
+                "Name": "sls-react-app-serverless-dev-ServerlessDeploymentBucketName"
+              }
+            },
+            "ReactAppLambdaFunctionQualifiedArn": {
+              "Description": "Current Lambda function version",
+              "Value": {
+                "Ref": "ReactAppLambdaVersion0kqZYPj4En1vyjXXVsM7b3vhOKgyKaksUBms7RZE"
+              },
+              "Export": {
+                "Name": "sls-react-app-serverless-dev-ReactAppLambdaFunctionQualifiedArn"
+              }
+            },
+            "ServiceEndpoint": {
+              "Description": "URL of the service endpoint",
+              "Value": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "https://",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    ".execute-api.",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ".",
+                    {
+                      "Ref": "AWS::URLSuffix"
+                    },
+                    "/dev"
+                  ]
+                ]
+              },
+              "Export": {
+                "Name": "sls-react-app-serverless-dev-ServiceEndpoint"
+              }
+            }
+          }
+        },
+        "vpc": {}
+      },
+      "functions": {
+        "reactApp": {
+          "handler": "handler.main",
+          "events": [
+            {
+              "http": "ANY /"
+            },
+            {
+              "http": "ANY /{proxy+}"
+            }
+          ],
+          "name": "react-app-serverless-dev-reactApp",
+          "package": {},
+          "memory": 1024,
+          "timeout": 6,
+          "runtime": "nodejs18.x",
+          "vpc": {},
+          "versionLogicalId": "ReactAppLambdaVersion0kqZYPj4En1vyjXXVsM7b3vhOKgyKaksUBms7RZE"
+        }
+      },
+      "resources": {
+        "Resources": {
+          "ReactAppBucket": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+              "BucketName": "my-react-app-bucket-unique-id",
+              "WebsiteConfiguration": {
+                "IndexDocument": "index.html",
+                "ErrorDocument": "index.html"
+              }
+            }
+          }
+        },
+        "Outputs": {}
+      },
+      "plugins": [
+        "serverless-apigw-binary"
+      ]
+    },
+    "serviceRawFile": "service: react-app-serverless\n\nprovider:\n  name: aws\n  runtime: nodejs18.x\n  region: us-east-1\n\nfunctions:\n  reactApp:\n    handler: handler.main\n    events:\n      - http: ANY /\n      - http: ANY /{proxy+}\n\nresources:\n  Resources:\n    ReactAppBucket:\n      Type: AWS::S3::Bucket\n      Properties:\n        BucketName: my-react-app-bucket-unique-id\n        WebsiteConfiguration:\n          IndexDocument: index.html\n          ErrorDocument: index.html\n\nplugins:\n  - serverless-apigw-binary\n",
+    "command": [
+      "deploy"
+    ],
+    "options": {},
+    "error": {
+      "message": "An error occurred: ReactAppBucket - Resource handler returned message: \"The specified bucket does not exist (Service: S3, Status Code: 404, Request ID: H7N8172V2T6FQ5Q5, Extended Request ID: /aDCsCYmMhcUb7mLGNdyVGwqiunX8rekLkl+6iIA1rO6sLsvmEffrGJC2fxpivgiaztRRHlTTck=)\" (RequestToken: 3cd26eac-12f1-fba7-3ca5-71e0c8fb6411, HandlerErrorCode: NotFound).",
+      "stack": "ServerlessError2: An error occurred: ReactAppBucket - Resource handler returned message: \"The specified bucket does not exist (Service: S3, Status Code: 404, Request ID: H7N8172V2T6FQ5Q5, Extended Request ID: /aDCsCYmMhcUb7mLGNdyVGwqiunX8rekLkl+6iIA1rO6sLsvmEffrGJC2fxpivgiaztRRHlTTck=)\" (RequestToken: 3cd26eac-12f1-fba7-3ca5-71e0c8fb6411, HandlerErrorCode: NotFound).\n    at file:///C:/Users/TOGOMORI/.serverless/releases/4.4.18/package/dist/sf-core.js:727:830\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async AwsDeploy.update (file:///C:/Users/TOGOMORI/.serverless/releases/4.4.18/package/dist/sf-core.js:727:25457)\n    at async aws:deploy:deploy:updateStack (file:///C:/Users/TOGOMORI/.serverless/releases/4.4.18/package/dist/sf-core.js:738:6064)\n    at async PluginManager.runHooks (file:///C:/Users/TOGOMORI/.serverless/releases/4.4.18/package/dist/sf-core.js:925:9311)\n    at async PluginManager.invoke (file:///C:/Users/TOGOMORI/.serverless/releases/4.4.18/package/dist/sf-core.js:925:10082)\n    at async PluginManager.spawn (file:///C:/Users/TOGOMORI/.serverless/releases/4.4.18/package/dist/sf-core.js:925:10443)\n    at async PluginManager.runHooks (file:///C:/Users/TOGOMORI/.serverless/releases/4.4.18/package/dist/sf-core.js:925:9311)\n    at async PluginManager.invoke (file:///C:/Users/TOGOMORI/.serverless/releases/4.4.18/package/dist/sf-core.js:925:10082)\n    at async PluginManager.run (file:///C:/Users/TOGOMORI/.serverless/releases/4.4.18/package/dist/sf-core.js:925:10813)",
+      "code": "AWS_CLOUD_FORMATION_UPDATE_STACK_INTERNAL_S3_BUCKET_UPDATE_FAILED"
+    },
+    "params": {},
+    "machineId": "6f780c7cc8cf2d3b7df41fc0d6addb21",
+    "stage": "dev",
+    "accessKeyV2": "<REDACTED>",
+    "accessKeyV1": "<REDACTED>",
+    "orgId": "1b010837-85fe-4781-851c-5ccbabb9d6df",
+    "orgName": "ecofriendly",
+    "userId": "NW6K0shGq0THnxfXRz",
+    "dashboard": {
+      "isEnabledForService": false,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": null,
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": null,
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "userName": "ecofriendly",
+    "subscription": null,
+    "userEmail": "mhagnemohamed5@gmail.com",
+    "serviceProviderAwsRegion": "us-east-1",
+    "serviceProviderAwsCredentials": "<REDACTED>",
+    "serviceProviderAwsAccountId": "980921730659",
+    "projectType": "traditional",
+    "versionSf": "4.4.18",
+    "serviceProviderAwsCfStackName": "react-app-serverless-dev",
+    "serviceUniqueId": "arn:aws:cloudformation:us-east-1:980921730659:stack/react-app-serverless-dev/dbd1f8f0-c05c-11ef-84ec-12440b058b15",
+    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:us-east-1:980921730659:stack/react-app-serverless-dev/dbd1f8f0-c05c-11ef-84ec-12440b058b15",
+    "serviceProviderAwsCfStackCreated": "2024-12-22T12:04:13.048Z",
+    "serviceProviderAwsCfStackUpdated": "2024-12-22T12:24:26.158Z",
+    "serviceProviderAwsCfStackStatus": "UPDATE_ROLLBACK_IN_PROGRESS",
+    "serviceProviderAwsCfStackOutputs": null
+  }
+}
