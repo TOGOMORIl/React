@@ -17,7 +17,7 @@ const Login = () => {
     try {
       // API Call
       const response = await axios.post(
-        "https://bml1ur6qt9.execute-api.us-east-1.amazonaws.com/dev/login",
+        "https://6q7o3oh66b.execute-api.us-east-1.amazonaws.com/dev/login",
         {
           username,
           password,
